@@ -1,6 +1,5 @@
 package nix.education.java.coffeemachine;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 class CoffeeMachine {
@@ -13,7 +12,7 @@ static Scanner scan = new Scanner(System.in);
         this.AMOUNT_OF_COFFEE_BEANS = 120;
         this.AMOUNT_OF_CUPS = 9;
         this.AMOUNT_OF_MONEY = 550;
-        System.out.println("\n| Current Status: |");
+        System.out.println("\n| Current Status: |\n");
         System.out.println("--- Available Water on coffee machine: " + AMOUNT_OF_WATER);
         System.out.println("--- Available Milk on coffee machine: " + AMOUNT_OF_MILK);
         System.out.println("--- Available Coffee Beans on coffee machine: " + AMOUNT_OF_COFFEE_BEANS);
@@ -23,7 +22,7 @@ static Scanner scan = new Scanner(System.in);
 
     //статус ингредиентов
     private void GetIngredients() {
-        System.out.println("\n| Current Status: |");
+        System.out.println("\n| Current Status: |\n");
         System.out.println("--- Available Water on coffee machine: "+String.format("%.1f",this.AMOUNT_OF_WATER));
         System.out.println("--- Available Milk on coffee machine: "+String.format("%.1f", this.AMOUNT_OF_MILK));
         System.out.println("--- Available Coffee Beans on coffee machine: "+String.format("%.1f", this.AMOUNT_OF_COFFEE_BEANS));
@@ -33,7 +32,7 @@ static Scanner scan = new Scanner(System.in);
 
     //меню добавления ингредиентов
     private void FillIngredients() {
-        System.out.println("Write how many ml of water you want to add:");
+        System.out.println("\nWrite how many ml of water you want to add:");
         int adding_water = scan.nextInt();
         AMOUNT_OF_WATER += adding_water;
         System.out.println("Write how many ml of milk you want to add:");
@@ -46,20 +45,20 @@ static Scanner scan = new Scanner(System.in);
         int adding_cups = scan.nextInt();
         AMOUNT_OF_CUPS += adding_cups;
         System.out.println("\n| Current Status: |\n" + "--- Available Water on coffee machine: " + AMOUNT_OF_WATER + "\n--- Available Milk on coffee machine: " + AMOUNT_OF_MILK + "\n--- Available Coffee Beans on coffee machine: " + AMOUNT_OF_COFFEE_BEANS + "\n--- Available Cups on coffee machine: " + AMOUNT_OF_CUPS);
-        this.GetIngredients();
         this.start();
     }
 
     //меню изъятия денег
     public void GetMoney() {
         this.AMOUNT_OF_MONEY -= this.AMOUNT_OF_MONEY;
-        this.GetIngredients();
+        System.out.println("\n--- Available Money on coffee machine: "+String.format("%.1f", this.AMOUNT_OF_MONEY));
+        //this.GetIngredients();
         this.start();
     }
 
     //меню приготовления кофе
     private void BuyCoffee() {
-        System.out.println("What do you want to buy?\n--- 1 - Espresso\n--- 2 - Latte\n--- 3 - Cappuccino");
+        System.out.println("\nWhat do you want to buy?\n--- 1 - Espresso\n--- 2 - Latte\n--- 3 - Cappuccino\n--- 0 - Back to menu");
         char t = scan.next().charAt(0);
         switch (t) {
             case '1':
@@ -74,7 +73,7 @@ static Scanner scan = new Scanner(System.in);
             case '0':
                 break;
         }
-        this.GetIngredients();
+        //this.GetIngredients();
         this.start();
     }
 
@@ -90,6 +89,7 @@ static Scanner scan = new Scanner(System.in);
             System.out.println("Taking 250ml of Water.");
             this.AMOUNT_OF_WATER -= 250;
             System.out.println("Your Espresso is READY!");
+            //this.GetIngredients();
         } else {
             System.out.println("Available Cups "+String.format("%.1f", this.AMOUNT_OF_CUPS));
             System.out.println("Available Water(ml) "+String.format("%.1f", this.AMOUNT_OF_WATER));
@@ -114,6 +114,7 @@ static Scanner scan = new Scanner(System.in);
             System.out.println("Taking 20gm of Coffee Beans.");
             this.AMOUNT_OF_COFFEE_BEANS -= 20;
             System.out.println("Your Espresso is READY!");
+            //this.GetIngredients();
         } else {
             System.out.println("Available Cups "+String.format("%.1f", this.AMOUNT_OF_CUPS));
             System.out.println("Available Water(ml) "+String.format("%.1f", this.AMOUNT_OF_WATER));
@@ -121,7 +122,6 @@ static Scanner scan = new Scanner(System.in);
             System.out.println("Available Coffee Power(Gram) "+String.format("%.1f",this.AMOUNT_OF_COFFEE_BEANS));
             System.out.println("Some Items Are Not Available, Please Fill before Making Coffee.");
         }
-        this.GetIngredients();
         this.start();
     }
 
@@ -139,6 +139,7 @@ static Scanner scan = new Scanner(System.in);
             System.out.println("Taking 12gm of Coffee Beans.");
             this.AMOUNT_OF_COFFEE_BEANS -= 12;
             System.out.println("Your Espresso is READY!");
+            //this.GetIngredients();
         } else {
             System.out.println("Available Cups "+String.format("%.1f", this.AMOUNT_OF_CUPS));
             System.out.println("Available Water(ml) "+String.format("%.1f", this.AMOUNT_OF_WATER));
@@ -146,37 +147,23 @@ static Scanner scan = new Scanner(System.in);
             System.out.println("Available Coffee Power(Gram) "+String.format("%.1f",this.AMOUNT_OF_COFFEE_BEANS));
             System.out.println("Some Items Are Not Available, Please Fill before Making Coffee.");
         }
-        this.GetIngredients();
         this.start();
     }
 
     //меню выбора кофемашины
     public void start() {
-        while (true) {
-            System.out.println("Write action (buy, fill, take):");
+        boolean t = true;
+        while (t) {
+            System.out.println("\nWrite action (buy, fill, take, remaining, exit):");
             String action = scan.next();
-            if (action.equals("buy")) {
-                this.BuyCoffee();
+            switch (action) {
+                case "buy" -> this.BuyCoffee();
+                case "fill" -> this.FillIngredients();
+                case "take" -> this.GetMoney();
+                case "remaining" -> this.GetIngredients();
+                case "exit" -> t = false;
             }
-            if (action.equals("fill")) {
-                this.FillIngredients();
-            }
-            else if (action.equals("take")) {
-                this.GetMoney();
-            }
-            //это для 5 этапа(оставил чтобы не писать заново)
-//            char c = CoffeeMachine.scan.next().charAt(0);
-//            switch (c) {
-//                case '1':
-//                    this.BuyCoffee();
-//                    break;
-//                case '2':
-//                    this.FillIngredients();
-//                    break;
-//                case '3':
-//                    this.GetMoney();
-//                    break;
-//            }
+
         }
     }
 }
@@ -189,9 +176,18 @@ class MakeCoffee {
         char d;
         d = scan.next().charAt(0);
         if(d == 'Y' || d == 'y') {
-            System.out.print("Starting to make a coffee\n" + "Grinding coffee beans\n" + "Boiling water\n" + "Mixing boiled water with crushed coffee beans\n" + "Pouring coffee into the cup\n" + "Pouring some milk into the cup\n" + "Coffee Machine is ready!\n");
+            System.out.print("""
+                    Starting to make a coffee
+                    Grinding coffee beans
+                    Boiling water
+                    Mixing boiled water with crushed coffee beans
+                    Pouring coffee into the cup
+                    Pouring some milk into the cup
+                    Coffee Machine is ready!
+                    """);
             CoffeeMachine cm = new CoffeeMachine();
             cm.start();
+            System.out.println("Shutting Down...\n");
         } else {
             System.out.println("Shutting Down...\n");
         }
